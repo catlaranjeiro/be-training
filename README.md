@@ -7,6 +7,8 @@ BE training with NodeJs and Express
 ### Dependencies
 
 * node v18 or higher
+* Express
+* express-validator
 
 ### Installing
 
