@@ -19,12 +19,10 @@ BE training with NodeJs and Express
 npm run express-server
 ```
 
-## Help
+## Branches
 
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+This repo is structured in different branches, as follows:
+* **initial-training**: the basics of API functionality - http-server, express, validation, params, etc. Not and organized project
 
 ## Authors
 
