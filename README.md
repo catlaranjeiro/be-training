@@ -13,7 +13,7 @@ BE training with NodeJs and Express
 ### Installing
 
 * Run `npm i` to install all dependencies
-* Setup the env file - check `.env.example`
+* Setup the env file - check [.env.example](/.env.example)
 
 ### Executing program
 
