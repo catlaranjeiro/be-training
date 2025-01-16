@@ -34,10 +34,10 @@ Catarina Laranjeiro
 
 ## License
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the LICENSE.md file for details
 
 ## Acknowledgments
 
-[@tarunnagia](https://www.linkedin.com/in/tarunnagia/) - mentor
-[@diogocarneiro](https://www.linkedin.com/in/fdiogocarneiro/)
-[Studio Graphene](https://www.studiographene.com/)
+* [@tarunnagia](https://www.linkedin.com/in/tarunnagia/) - mentor
+* [@diogocarneiro](https://www.linkedin.com/in/fdiogocarneiro/)
+* [Studio Graphene](https://www.studiographene.com/)
