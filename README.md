@@ -24,7 +24,7 @@ npm run express-server
 ## Branches
 
 This repo is structured in different branches, as follows:
-* **initial-training**: the basics of API functionality - http-server, express, validation, params, etc. Not and organized project
+* [initial-training](https://github.com/catlaranjeiro/be-training/tree/initial-training): the basics of API functionality - http-server, express, validation, params, etc. Not and organized project
 
 ## Authors
 
