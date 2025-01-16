@@ -29,8 +29,8 @@ This repo is structured in different branches, as follows:
 ## Authors
 
 Catarina Laranjeiro
-[LinkedIn](https://www.linkedin.com/in/catarinalaranjeiro/)
-[Github](https://github.com/catlaranjeiro)
+- [LinkedIn](https://www.linkedin.com/in/catarinalaranjeiro/)
+- [Github](https://github.com/catlaranjeiro)
 
 
 ## License
