@@ -26,6 +26,7 @@ npm run dev
 This repo is structured in different branches, as follows:
 * [main](https://github.com/catlaranjeiro/be-training): BE APIs for a blog
 * [initial-training](https://github.com/catlaranjeiro/be-training/tree/initial-training): the basics of API functionality - http-server, express, validation, params, etc.
+* [blog-ts-noDB](https://github.com/catlaranjeiro/be-training/tree/blog-ts-noDB): First setting of blog themed project. Does not implement DB yet.
 
 ## Authors
 
