@@ -18,7 +18,7 @@ BE training with NodeJs and Express
 ### Executing program
 
 ```
-npm run express-server
+npm run dev
 ```
 
 ## Branches
