@@ -1,8 +1,8 @@
 import { Router, json, Request, Response } from 'express';
 import { checkSchema, validationResult } from 'express-validator';
 import { timeLog } from '../utils/timelog';
-import { allArticles } from '../utils/mockedData';
 import ArticlesValSchema from '../validation/articles-validation';
+import client from '../db';
 
 const articlesRouter = Router({ mergeParams: true });
 
@@ -12,11 +12,18 @@ articlesRouter.use(timeLog); // this prints the time of the request for all requ
 articlesRouter
   .route('/')
   .get((req, res) => {
-    const response = {
-      status: 'success',
-      data: allArticles,
-    };
-    res.status(200).json(response);
+    const getAllQuery = 'SELECT * FROM articles';
+    client.query(getAllQuery, (err, result) => {
+      if (err) {
+        res.status(404).json({ status: 'error', message: err.message });
+        return;
+      }
+      const response = {
+        status: 'success',
+        data: result.rows,
+      };
+      res.status(200).json(response);
+    });
   })
   .post(
     checkSchema(ArticlesValSchema.create),
@@ -28,22 +35,56 @@ articlesRouter
         return;
       }
 
-      const newArticle = {
-        id: Math.floor(Math.random() * 1000),
-        ...req.body,
-      };
-      const response = {
-        status: 'success',
-        data: newArticle,
-      };
-      res.status(201).json(response);
+      const insertArticleQuery =
+        'INSERT INTO articles (id, title, description, article) VALUES ($1, $2, $3, $4) RETURNING *';
+
+      const newArticle = [
+        Math.floor(Math.random() * 1000),
+        req.body.title,
+        req.body.description,
+        req.body.article,
+      ];
+
+      client.query(insertArticleQuery, newArticle, (err, result) => {
+        if (err) {
+          res.status(500).json({ status: 'error', message: err.message });
+          return;
+        }
+
+        const response = {
+          status: 'success',
+          data: result.rows,
+        };
+        res.status(201).json(response);
+      });
     },
   );
 
-articlesRouter.put(
-  '/:id',
-  checkSchema(ArticlesValSchema.edit),
-  (req: Request, res: Response) => {
+articlesRouter
+  .route('/:id')
+  .get((req, res) => {
+    const articleId = parseInt(req.params.id);
+    const getArticleIdQuery = 'SELECT * FROM articles WHERE id = $1';
+
+    client.query(getArticleIdQuery, [articleId], (err, result) => {
+      if (err) {
+        res.status(500).json({ status: 'error', message: err.message });
+        return;
+      }
+
+      if (result.rows.length === 0) {
+        res.status(404).json({ status: 'error', message: 'Article not found' });
+        return;
+      }
+
+      const response = {
+        status: 'success',
+        data: result.rows,
+      };
+      res.status(200).json(response);
+    });
+  })
+  .put(checkSchema(ArticlesValSchema.edit), (req: Request, res: Response) => {
     const articleId = parseInt(req.params.id);
     const errors = validationResult(req);
 
@@ -52,26 +93,43 @@ articlesRouter.put(
       return;
     }
 
-    const existingArticle = allArticles.find(
-      article => article.id === articleId,
-    );
+    const fieldsToUpdate = [];
+    const values = [articleId];
 
-    if (!existingArticle) {
-      res.status(404).json({ status: 'error', message: 'Article not found' });
+    if (req.body.title) {
+      fieldsToUpdate.push('title = $' + (fieldsToUpdate.length + 2));
+      values.push(req.body.title);
+    }
+    if (req.body.description) {
+      fieldsToUpdate.push('description = $' + (fieldsToUpdate.length + 2));
+      values.push(req.body.description);
+    }
+    if (req.body.article) {
+      fieldsToUpdate.push('article = $' + (fieldsToUpdate.length + 2));
+      values.push(req.body.article);
+    }
+
+    if (fieldsToUpdate.length === 0) {
+      res.status(400).json({ status: 'error', message: 'No fields to update' });
       return;
     }
 
-    const updatedArticle = {
-      ...existingArticle,
-      ...req.body,
-    };
+    const updateArticleQuery = `UPDATE articles SET ${fieldsToUpdate.join(
+      ', ',
+    )} WHERE id = $1 RETURNING *`;
 
-    const response = {
-      status: 'success',
-      data: updatedArticle,
-    };
-    res.status(200).json(response);
-  },
-);
+    client.query(updateArticleQuery, values, (err, result) => {
+      if (err) {
+        res.status(500).json({ status: 'error', message: err.message });
+        return;
+      }
+
+      const response = {
+        status: 'success',
+        data: result.rows,
+      };
+      res.status(200).json(response);
+    });
+  });
 
 export default articlesRouter;

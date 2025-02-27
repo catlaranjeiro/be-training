@@ -1,5 +1,7 @@
 import express from 'express';
 import articlesRouter from './routes/articles';
+import 'dotenv/config'
+import './db';
 
 const app = express();
 const port = process.env.PORT;
