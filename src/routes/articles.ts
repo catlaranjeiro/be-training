@@ -130,6 +130,23 @@ articlesRouter
       };
       res.status(200).json(response);
     });
+  })
+  .delete((req, res) => {
+    const articleId = parseInt(req.params.id);
+    const deleteArticleQuery = 'DELETE FROM articles WHERE id = $1';
+
+    client.query(deleteArticleQuery, [articleId], (err, result) => {
+      if (err) {
+        res.status(500).json({ status: 'error', message: err.message });
+        return;
+      }
+
+      const response = {
+        status: 'success',
+        data: result.rows,
+      };
+      res.status(200).json(response);
+    });
   });
 
 export default articlesRouter;
