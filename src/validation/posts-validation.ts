@@ -27,13 +27,22 @@ export const create: Schema = {
       options: { max: 50 },
     },
   },
-  article: {
+  text: {
     in: ['body'],
     notEmpty: {
       errorMessage: 'article cannot be empty',
     },
     isString: {
       errorMessage: 'article must be a string',
+    },
+  },
+  authorId: {
+    in: ['body'],
+    notEmpty: {
+      errorMessage: 'authorId cannot be empty',
+    },
+    isString: {
+      errorMessage: 'authorId must be a string',
     },
   },
 };
@@ -67,7 +76,7 @@ export const edit: Schema = {
       options: { max: 50 },
     },
   },
-  article: {
+  text: {
     in: ['body'],
     optional: true,
     notEmpty: {
@@ -79,9 +88,9 @@ export const edit: Schema = {
   },
 };
 
-const ArticlesValSchema = {
+const PostsValSchema = {
   create,
   edit,
 };
 
-export default ArticlesValSchema;
+export default PostsValSchema;

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "dev": "node --watch -r ts-node/register src/server.ts"
+    "dev": "node --watch -r ts-node/register src/app.ts"
   },
   "author": "",
   "license": "ISC",
@@ -15,7 +15,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
-    "pg": "^8.13.1"
+    "pg": "^8.13.1",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

@@ -28,6 +28,7 @@ This repo is structured in different branches, as follows:
 * [initial-training](https://github.com/catlaranjeiro/be-training/tree/initial-training): the basics of API functionality - http-server, express, validation, params, etc.
 * [blog-ts-noDB](https://github.com/catlaranjeiro/be-training/tree/blog-ts-noDB): First setting of blog themed project. Does not implement DB yet.
 * [db-no-orm](https://github.com/catlaranjeiro/be-training/tree/db-no-orm): DB implementation with Postgresql and basic CRUD actions.
+* [db-typeorm](https://github.com/catlaranjeiro/be-training/tree/db-no-orm): TypeORM implementation with CRUD operations for User and Post entities
 
 ## Authors
 
