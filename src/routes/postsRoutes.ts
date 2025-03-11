@@ -32,7 +32,7 @@ postsRouter
         return;
       }
 
-      const { title, description, text, authorId } = req.body;
+      const { title, description, text, authorId, tags } = req.body;
 
       // Find author by id
       const author = await usersRepository.findOneBy({ id: authorId });
@@ -42,12 +42,14 @@ postsRouter
         return;
       }
 
-      const newPost = new PostEntity();
-      newPost.title = title;
-      newPost.description = description;
-      newPost.text = text;
-      newPost.author = author;
-      newPost.publishedAt = new Date();
+      const newPost = Object.assign(new PostEntity(), {
+        title,
+        description,
+        text,
+        tags: tags || [],
+        author,
+        publishedAt: new Date(),
+      });
 
       const result = await postsRepository.save(newPost);
 
@@ -78,7 +80,7 @@ postsRouter
       const postId = req.params.id;
       const errors = validationResult(req);
 
-      const { title, description, text } = req.body;
+      const { title, description, text, tags } = req.body;
 
       if (!errors.isEmpty()) {
         res.status(422).json({ status: 'error', errors: errors });
@@ -94,7 +96,7 @@ postsRouter
 
       const updatedPost = postsRepository.update(
         { id: postId },
-        { title, description, text },
+        { title, description, text, tags: tags || [] },
       );
 
       res.status(200).json({ status: 'success', data: updatedPost });
