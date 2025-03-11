@@ -3,8 +3,8 @@ import { checkSchema, validationResult } from 'express-validator';
 import { timeLog } from '../utils/timelog';
 import PostsValSchema from '../validation/posts-validation';
 import { AppDataSource } from '../database/appDataSource';
-import { PostEntity } from '../database/Entity/PostEntity';
-import { UserEntity } from '../database/Entity/UserEntity';
+import { PostEntity } from '../database/entity/PostEntity';
+import { UserEntity } from '../database/entity/UserEntity';
 
 const postsRouter = Router({ mergeParams: true });
 const postsRepository = AppDataSource.getRepository(PostEntity);

@@ -13,6 +13,9 @@ export class UserEntity extends BaseEntity {
   @Column({ type: "citext" })
   email!: string
 
+  @Column({ type: "varchar", length: 50 })
+  password!: string
+
   @OneToMany(() => PostEntity, post => post.author)
   posts!: PostEntity[];
 }

@@ -2,7 +2,7 @@ import { Router, json, Request, Response } from 'express';
 import { checkSchema, validationResult } from 'express-validator';
 import { timeLog } from '../utils/timelog';
 import { AppDataSource } from '../database/appDataSource';
-import { UserEntity } from '../database/Entity/UserEntity';
+import { UserEntity } from '../database/entity/UserEntity';
 import UsersValSchema from '../validation/users-validation';
 
 const usersRouter = Router({ mergeParams: true });

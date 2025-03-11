@@ -13,11 +13,11 @@ export class PostEntity extends BaseEntity {
   @Column({ type: "text" })
   text!: string
 
-  // @Column({ type: 'uuid' })
-  // authorId!: string
-
   @Column({ type: 'timestamp' })
   publishedAt!: Date
+
+  @Column({type: "text", array: true, nullable: true})
+  tags!: string[]
 
   @ManyToOne(() => UserEntity, user => user.posts)
   author!: UserEntity

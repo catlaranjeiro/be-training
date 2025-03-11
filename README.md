@@ -30,6 +30,12 @@ This repo is structured in different branches, as follows:
 * [db-no-orm](https://github.com/catlaranjeiro/be-training/tree/db-no-orm): DB implementation with Postgresql and basic CRUD actions.
 * [db-typeorm](https://github.com/catlaranjeiro/be-training/tree/db-typeorm): TypeORM implementation with CRUD operations for User and Post entities
 
+## Support links
+#### TypeORM migrations
+* [TypeORM migrations](https://orkhan.gitbook.io/typeorm/docs/migrations#creating-a-new-migration)
+* [TypeORM Entity Manager API](https://orkhan.gitbook.io/typeorm/docs/entity-manager-api)
+* [TypeORM QueryBuilder](https://orkhan.gitbook.io/typeorm/docs/select-query-builder)
+
 ## Authors
 
 Catarina Laranjeiro
