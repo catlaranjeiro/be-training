@@ -1,4 +1,4 @@
-import { Router, json, Request, Response } from 'express';
+import e, { Router, json, Request, Response } from 'express';
 import { checkSchema, validationResult } from 'express-validator';
 import { timeLog } from '../utils/timelog';
 import { AppDataSource } from '../database/appDataSource';
@@ -28,12 +28,14 @@ usersRouter
         return;
       }
 
-      const { firstName, lastName, email } = req.body;
+      const { firstName, lastName, email, password } = req.body;
 
-      const newUser = new UserEntity();
-      newUser.firstName = firstName;
-      newUser.lastName = lastName;
-      newUser.email = email;
+      const newUser = Object.assign(new UserEntity(), {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
 
       const result = await usersRepository.save(newUser);
 

@@ -68,17 +68,28 @@ export class SeedTablesData1741624462058 implements MigrationInterface {
      * it will revert the seed data in above up method
      */
 
+    // Get the IDs of the users with the specified emails
+    const userIds = await queryRunner.manager
+      .createQueryBuilder()
+      .select('id')
+      .from('users', 'user')
+      .where('email IN (:...emails)', {
+        emails: ['john.smith@email.com', 'jane.smith@email.com'],
+      })
+      .getRawMany();
+
+    const ids = userIds.map(user => user.id);
+
     // First we need to delete posts, because of foreign key constraint error - relation to users in author column
+    // Delete posts authored by the users with the retrieved IDs
     await queryRunner.manager
       .createQueryBuilder()
       .delete()
       .from('posts')
-      .where('title IN (:...titles)', {
-        titles: ['The Cosmos', 'Galactic Secrets'],
-      })
+      .where('authorId IN (:...ids)', { ids })
       .execute();
 
-    // Then we can delete users, as relation to posts no longer exists
+    // Delete the users with the specified emails
     await queryRunner.manager
       .createQueryBuilder()
       .delete()
