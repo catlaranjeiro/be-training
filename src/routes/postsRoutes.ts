@@ -1,10 +1,11 @@
-import { Router, json, Request, Response } from 'express';
+import { Router, json, Request, Response, NextFunction } from 'express';
 import { checkSchema, validationResult } from 'express-validator';
 import { timeLog } from '../utils/timelog';
 import PostsValSchema from '../validation/posts-validation';
 import { AppDataSource } from '../database/appDataSource';
 import { PostEntity } from '../database/entity/PostEntity';
 import { UserEntity } from '../database/entity/UserEntity';
+import { authenticateToken, authenticateTokenMiddleware } from '../middleware/authenticate-token';
 
 const postsRouter = Router({ mergeParams: true });
 const postsRepository = AppDataSource.getRepository(PostEntity);
@@ -15,7 +16,7 @@ postsRouter.use(timeLog); // this prints the time of the request for all request
 
 postsRouter
   .route('/')
-  .get(async (req, res) => {
+  .get(authenticateTokenMiddleware, async (req: Request, res: Response) => {
     const allPosts = await postsRepository.find({
       relations: { author: true },
     });
@@ -23,6 +24,7 @@ postsRouter
     res.status(200).json({ status: 'success', data: allPosts });
   })
   .post(
+    authenticateTokenMiddleware,
     checkSchema(PostsValSchema.create),
     async (req: Request, res: Response) => {
       const errors = validationResult(req);
@@ -39,6 +41,13 @@ postsRouter
 
       if (!author) {
         res.status(404).json({ status: 'error', message: 'Author not found' });
+        return;
+      }
+
+      // Assert req.user is defined and has the expected type (UserPayload)
+      // The authenticateTokenMiddleware ensures that req.user is set.
+      if (author.id !== req.user!.id) {
+        res.status(403).json({ status: 'error', message: 'You are not authorized to create a post for this author' });
         return;
       }
 
@@ -59,7 +68,7 @@ postsRouter
 
 postsRouter
   .route('/:id')
-  .get(async (req, res) => {
+  .get(authenticateTokenMiddleware, async (req, res) => {
     const postId = req.params.id;
 
     const postData = await postsRepository.findOne({
@@ -75,6 +84,7 @@ postsRouter
     res.status(200).json({ status: 'success', data: postData });
   })
   .put(
+    authenticateTokenMiddleware,
     checkSchema(PostsValSchema.edit),
     async (req: Request, res: Response) => {
       const postId = req.params.id;
@@ -94,6 +104,11 @@ postsRouter
         return;
       }
 
+      if (postData?.author?.id !== req.user!.id) {
+        res.status(403).json({ status: 'error', message: 'You are not authorized to update this post' });
+        return;
+      }
+
       const updatedPost = postsRepository.update(
         { id: postId },
         { title, description, text, tags: tags || [] },
@@ -102,13 +117,18 @@ postsRouter
       res.status(200).json({ status: 'success', data: updatedPost });
     },
   )
-  .delete(async (req, res) => {
+  .delete(authenticateTokenMiddleware, async (req, res) => {
     const postId = req.params.id;
 
     const postData = await postsRepository.findOneBy({ id: postId });
 
     if (!postData) {
       res.status(404).json({ status: 'error', message: 'Post not found' });
+      return;
+    }
+
+    if (postData?.author?.id !== req.user!.id) {
+      res.status(403).json({ status: 'error', message: 'You are not authorized to delete this post' });
       return;
     }
 

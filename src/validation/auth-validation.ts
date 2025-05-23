@@ -1,6 +1,6 @@
 import { Schema } from 'express-validator';
 
-export const create: Schema = {
+export const signup: Schema = {
   firstName: {
     in: ['body'],
     notEmpty: {
@@ -36,11 +36,41 @@ export const create: Schema = {
       errorMessage: 'Invalid email',
     },
   },
+  password: {
+    in: ['body'],
+    notEmpty: {
+      errorMessage: 'password cannot be empty',
+    },
+    isLength: {
+      errorMessage: 'password must be at least 8 characters long',
+      options: { min: 8 },
+    },
+  },
 };
 
-
-const UsersValSchema = {
-  create,
+export const login: Schema = {
+  email: {
+    in: ['body'],
+    notEmpty: {
+      errorMessage: 'email cannot be empty',
+    },
+    isEmail: {
+      errorMessage: 'Invalid email',
+    },
+  },
+  password: {
+    in: ['body'],
+    notEmpty: {
+      errorMessage: 'password cannot be empty',
+    },
+  },
 };
 
-export default UsersValSchema;
+export const logout: Schema = {};
+
+const AuthValSchema = {
+  signup,
+  login,
+};
+
+export default AuthValSchema;

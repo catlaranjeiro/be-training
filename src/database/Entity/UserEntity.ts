@@ -13,7 +13,7 @@ export class UserEntity extends BaseEntity {
   @Column({ type: "citext" })
   email!: string
 
-  @Column({ type: "varchar", length: 50 })
+  @Column({ type: 'varchar', length: 255, select: false })
   password!: string
 
   @OneToMany(() => PostEntity, post => post.author)

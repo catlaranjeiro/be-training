@@ -7,6 +7,7 @@
 
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import { PostEntity } from '../entity/PostEntity';
+import bcrypt from 'bcrypt';
 
 export class SeedTablesData1741624462058 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -20,13 +21,13 @@ export class SeedTablesData1741624462058 implements MigrationInterface {
           firstName: 'John',
           lastName: 'Smith',
           email: 'john.smith@email.com',
-          password: '1234',
+          password: await bcrypt.hash('1234', 10),
         },
         {
           firstName: 'Jane',
           lastName: 'Smith',
           email: 'jane.smith@email.com',
-          password: '1234',
+          password: await bcrypt.hash('5678', 10),
         },
       ])
       .returning('*')
