@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { UserPayload } from '../express';
 
-export const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
+export const authenticateRequest = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1]; // Because we will have Bearer token
   
@@ -22,6 +22,6 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
   });
 }
 
-export const authenticateTokenMiddleware = (req: Request, res: Response, next: NextFunction): void => {  
-  authenticateToken(req, res, next);
+export const authenticateRequestMiddleware = (req: Request, res: Response, next: NextFunction): void => {  
+  authenticateRequest(req, res, next);
 }

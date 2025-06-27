@@ -1,18 +1,19 @@
 import 'dotenv/config';
 import express from 'express';
-import postsRouter from './routes/postsRoutes';
-import usersRouter from './routes/usersRoutes';
 import { AppDataSource } from './database/appDataSource';
-import authRouter from './routes/authRoutes';
+import { Routes } from './api/routes';
 
 const port = process.env.PORT;
 
 const app = express();
 
+// Middleware
+app.use(express.json());
+
 // ROUTES
-app.use('/posts', postsRouter);
-app.use('/users', usersRouter);
-app.use('/auth', authRouter);
+const apiRouter = express.Router();
+new Routes().routes(apiRouter);
+app.use('/api', apiRouter);
 
 // initialize DB with TypeORM
 AppDataSource.initialize().then(() => {
