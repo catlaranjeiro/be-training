@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { HTTP_STATUS } from "../../config/http-status";
 import { PostService } from '../../services/posts.service';
 import { MESSAGES } from '../../utils/messages';
+import { validationResult } from 'express-validator';
 
 export class PostsController {
   constructor(private readonly postService: PostService) {}
@@ -16,6 +17,15 @@ export class PostsController {
   }
 
   public async createPost(req: Request, res: Response) {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        status: 'error',
+        message: errors,
+      });
+    }
+
     const newPost = await this.postService.createPost(req.body);
 
     if ('error' in newPost) {
@@ -54,6 +64,15 @@ export class PostsController {
   }
 
   public async updatePost(req: Request, res: Response) {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        status: 'error',
+        message: errors,
+      });
+    }
+
     const postId = req.params.id;
     const post = await this.postService.getPostDetails(postId);
 
