@@ -4,7 +4,7 @@
   "description": "be-training",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "tsc",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node --files' src/app.ts",
     "migration:create": "npx typeorm migration:create",
@@ -28,9 +28,12 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^22.10.7",
     "@types/pg": "^8.11.10",
+    "jest": "^30.0.3",
     "nodemon": "^3.1.10",
+    "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }

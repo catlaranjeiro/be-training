@@ -12,10 +12,13 @@ export class AuthController {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json({
-        status: 'error',
-        message: errors,
-      });
+      const responseParser = new ResponseParser();
+      return responseParser
+        .setHttpCode(HTTP_STATUS.BAD_REQUEST)
+        .setStatus(false)
+        .setMessage(MESSAGES.VALIDATION_ERROR)
+        .setBody(errors.array())
+        .send(res);
     }
 
     const result = await this.authService.register(req.body);
