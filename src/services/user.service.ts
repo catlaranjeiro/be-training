@@ -11,7 +11,14 @@ export class UserService {
   constructor() {}
 
   public async getAllUsers(token: string | undefined) {
-    const allUsers = await this.userRepository.find();
+    const allUsers = await this.userRepository.find({
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true
+      },
+    });
     return allUsers;
   }
 
