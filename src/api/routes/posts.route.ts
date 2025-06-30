@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { PostsController } from '../controllers/posts.controller';
 import { PostService } from '../../services/posts.service';
 import { checkSchema } from 'express-validator';
-import PostsValSchema from '../validators/post.validator';
+import PostValSchema from '../validators/post.validator';
 
 class PostsRoute {
   public router: Router = Router();
@@ -18,19 +18,19 @@ class PostsRoute {
       this.postController.getAllPosts(req, res);
     });
 
-    this.router.get('/:id', (req: Request, res: Response) => {
+    this.router.get('/:id', checkSchema(PostValSchema.details), (req: Request, res: Response) => {
       this.postController.getPostDetails(req, res);
     });
     
-    this.router.post('/', checkSchema(PostsValSchema.create), (req: Request, res: Response) => {
+    this.router.post('/', checkSchema(PostValSchema.create), (req: Request, res: Response) => {
       this.postController.createPost(req, res);
     });
 
-    this.router.put('/:id', checkSchema(PostsValSchema.edit), (req: Request, res: Response) => {
+    this.router.put('/:id', checkSchema(PostValSchema.edit), (req: Request, res: Response) => {
       this.postController.updatePost(req, res);
     });
 
-    this.router.delete('/:id', (req: Request, res: Response) => {
+    this.router.delete('/:id', checkSchema(PostValSchema.details), (req: Request, res: Response) => {
       this.postController.deletePost(req, res);
     });
   }

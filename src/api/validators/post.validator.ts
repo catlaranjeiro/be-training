@@ -1,5 +1,14 @@
 import { Schema } from 'express-validator';
 
+const details: Schema = {
+  id: {
+    in: ['params'],
+    isUUID: {
+      errorMessage: 'id must be a valid UUID',
+    },
+  },
+};
+
 export const create: Schema = {
   title: {
     in: ['body'],
@@ -48,6 +57,7 @@ export const create: Schema = {
 };
 
 export const edit: Schema = {
+  ...details,
   title: {
     in: ['body'],
     optional: true,
@@ -88,9 +98,10 @@ export const edit: Schema = {
   },
 };
 
-const PostsValSchema = {
+const PostValSchema = {
   create,
   edit,
+  details,
 };
 
-export default PostsValSchema;
+export default PostValSchema;

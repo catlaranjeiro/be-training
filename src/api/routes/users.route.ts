@@ -1,6 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { UsersController } from '../controllers/users.controller';
 import { UserService } from '../../services/user.service';
+import { checkSchema } from 'express-validator/lib';
+import UserValSchema from '../validators/user.validator';
 
 class UsersRoute {
   public router: Router = Router();
@@ -17,11 +19,11 @@ class UsersRoute {
       this.usersController.getAllUsers(req, res);
     });
 
-    this.router.get('/:id', (req: Request, res: Response) => {
+    this.router.get('/:id', checkSchema(UserValSchema.details), (req: Request, res: Response) => {
       this.usersController.getUserDetails(req, res);
     });
 
-    this.router.delete('/:id', (req: Request, res: Response) => {
+    this.router.delete('/:id', checkSchema(UserValSchema.details), (req: Request, res: Response) => {
       this.usersController.deleteUser(req, res);
     });
   }
